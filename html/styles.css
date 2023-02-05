@@ -197,7 +197,7 @@ p{
 .section__checkboxes{
     padding:2em
 }
-.section .fehlerpunkte{
+.section .faultpoints{
     min-width:10em;
     text-align:right;
     opacity:.5
@@ -220,7 +220,7 @@ p{
 .evaluation{
     display:none
 }
-.auswertung{
+.evaluation{
     margin-top:1em;
     font-size:1.25em;
     background-color:#fff;
@@ -233,7 +233,7 @@ p{
     text-align:center;
     margin:1em
 }
-.auswertung-group{
+.evaluation-group{
     display:-webkit-box;
     display:-ms-flexbox;
     display:flex;
@@ -243,11 +243,11 @@ p{
     flex-flow:row;
     margin:2em 0
 }
-.auswertung--falsch{
+.evaluation--incorrect{
     background-color:#cf0000;
     color:#fff
 }
-.auswertung--richtig{
+.evaluation--correct{
     background-color:#00ac00;
     color:#fff
 }
