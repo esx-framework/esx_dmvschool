@@ -2,9 +2,9 @@ class DrivingSchool {
   currentQuestion = 1;
   faultpoints = 0;
   maxErrorPoints = 9;
-  richtigeAntworten = 0;
-  falscheAntworten = 0;
-  bestanden = false;
+  correctAnswer = 0;
+  wrongAnswer = 0;
+  passed = false;
 
   questions = {
     1: {
@@ -121,7 +121,7 @@ $(".question-submit").click(function(e) {
 
 
 $(".end-button").click(function(){
-  if(drivingSchool.bestanden) {
+  if(drivingSchool.passed) {
     $.post('http://esx_dmvschool/close', JSON.stringify({}));
   } else {
     $.post('http://esx_dmvschool/kick', JSON.stringify({}));
@@ -169,11 +169,11 @@ function endFahrschule() {
     $(".evaluation-text").html("You can now take the practical driving test.")
     $(".evaluation-text2").html("We wish you lots of fun driving.")
     $(".evaluation-text3").html("Thank you for the participation!")
-    drivingSchool.bestanden = true;
+    drivingSchool.passed = true;
   }
 
-  $(".evaluation--incorrect span").html(drivingSchool.falscheAntworten)
-  $(".evaluation--correct span").html(drivingSchool.richtigeAntworten)
+  $(".evaluation--incorrect span").html(drivingSchool.wrongAnswer)
+  $(".evaluation--correct span").html(drivingSchool.correctAnswer)
   $(".evaluation--faultpoints span").html(drivingSchool.faultpoints)
 
   $(".evaluation").fadeIn(1000);
@@ -210,9 +210,9 @@ function checkCurrentQuestion() {
 
     if(fehler) {
       drivingSchool.faultpoints += drivingSchool.questions[drivingSchool.currentQuestion].faultpoints
-      drivingSchool.falscheAntworten++;
+      drivingSchool.wrongAnswer++;
     } else {
-      drivingSchool.richtigeAntworten++;
+      drivingSchool.correctAnswer++;
     }
 
 
