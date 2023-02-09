@@ -112,7 +112,7 @@ class DrivingSchool {
 let drivingSchool = new DrivingSchool();
 
 $(".start-drivingSchool").click(function(e) {
-  startFahrschule();
+  startDrivingSchool();
 });
 
 $(".question-submit").click(function(e) {
@@ -140,21 +140,21 @@ window.addEventListener('message', function(event){
   }
 });
 
-function newFahrschule() {
+function newDrivingSchool() {
   $(".introduction").show(0);
   $(".question").hide(0);
   $(".evaluation").hide(0);
   resetQuestion();
 }
 
-function startFahrschule() {
+function startDrivingSchool() {
   $(".introduction").hide(0);
   $(".question").fadeIn(1000);
   setQuestion(drivingSchool.currentQuestion)
   $(".step-progress__progress").animate({ width: "5%" }, 500 );
 }
 
-function endFahrschule() {
+function endDrivingSchool() {
   $(".question").hide(0);
 
   if(drivingSchool.faultpoints >= drivingSchool.maxErrorPoints) {
@@ -185,7 +185,7 @@ function loadNextQuestion() {
   if(checkQuestion) {
     drivingSchool.currentQuestion++;
     if(drivingSchool.currentQuestion > Object.keys(drivingSchool.questions).length) {
-      endFahrschule();
+      endDrivingSchool();
     } else {
       resetQuestion()
       setQuestion(drivingSchool.currentQuestion)
