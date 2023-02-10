@@ -47,17 +47,17 @@ function endDrivingSchool() {
   $(".question").hide(0);
 
   if(drivingSchool.faultpoints >= drivingSchool.maxErrorPoints) {
-    $(".evaluation-title").html("Oops, that was probably nothing!")
-    $(".evaluation-description").html("Unfortunately, you did not pass the theoretical driving test.")
-    $(".evaluation-text").html("You are welcome to repeat the theoretical driving test again.")
-    $(".evaluation-text2").html("We hope that next time you will be better prepared.")
-    $(".evaluation-text3").html("Thank you for the participation!")
+    $(".evaluation-title").html(unsuccess_title)
+    $(".evaluation-description").html(unsuccess_desciption)
+    $(".evaluation-text").html(unsuccess_text)
+    $(".evaluation-text2").html(unsuccess_text2)
+    $(".evaluation-text3").html(unsuccess_text3)
   } else {
-    $(".evaluation-title").html("Congratulations!")
-    $(".evaluation-description").html("You have passed the theoretical driving test.")
-    $(".evaluation-text").html("You can now take the practical driving test.")
-    $(".evaluation-text2").html("We wish you lots of fun driving.")
-    $(".evaluation-text3").html("Thank you for the participation!")
+    $(".evaluation-title").html(success_title)
+    $(".evaluation-description").html(success_desciption)
+    $(".evaluation-text").html(success_text)
+    $(".evaluation-text2").html(success_text2)
+    $(".evaluation-text3").html(success_text3)
     drivingSchool.passed = true;
   }
 
@@ -106,7 +106,7 @@ function checkCurrentQuestion() {
 
 
   } else {
-    $(".error-message").fadeOut(0).fadeIn().html("Error - You must answer the question to continue.")
+    $(".error-message").fadeOut(0).fadeIn().html(error_msg)
   }
 
   return anyChecked
@@ -114,7 +114,7 @@ function checkCurrentQuestion() {
 
 function setQuestion(questionId) {
   $(".section__header h1").html("["+questionId+"] "+drivingSchool.questions[questionId].question+"")
-  $(".section__header .faultpoints").html(""+drivingSchool.questions[questionId].faultpoints+" Fault points")
+  $(".section__header .faultpoints").html(""+drivingSchool.questions[questionId].faultpoints+" "+fault_point)
 
   drivingSchool.questions[questionId].answer.forEach(function(antwort, i) {
     $(".section__checkboxes").append('<label class="checkbox">'+antwort[0]+'<input type="checkbox" name="'+i+'"><span class="checkmark"></span></label>')
