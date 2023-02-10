@@ -132,7 +132,7 @@ window.addEventListener('message', function(event){
   var item = event.data;
   if(item.openQuestion == true) {
     drivingSchool = new DrivingSchool();
-    newFahrschule();
+    newDrivingSchool();
     $(".drivingSchool").fadeIn();
   }
   if(item.openQuestion == false) {
