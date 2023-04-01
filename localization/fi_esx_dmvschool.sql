@@ -1,5 +1,3 @@
-
-
 INSERT INTO `licenses` (`type`, `label`) VALUES
 	('dmv', 'Teoriakoe'),
 	('drive', 'Autokortti'),
