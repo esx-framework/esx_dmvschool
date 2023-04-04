@@ -31,6 +31,7 @@ files {
 	'html/ui.html',
 	'html/logo.png',
 	'html/styles.css',
+	'html/config.js',
 	'html/scripts.js',
 	'html/debounce.min.js'
 }
