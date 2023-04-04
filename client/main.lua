@@ -11,46 +11,56 @@ local CurrentBlip       = nil
 local CurrentZoneType   = nil
 local IsAboveSpeedLimit = false
 local LastVehicleHealth = nil
+local examActivated = false
 
-function DrawMissionText(msg, time)
-	ClearPrints()
-	BeginTextCommandPrint('STRING')
-	AddTextComponentSubstringPlayerName(msg)
-	EndTextCommandPrint(time, true)
-end
-
-function StartTheoryTest()
+local function StartTheoryTest()
 	CurrentTest = 'theory'
 
-	SendNUIMessage({
-		openQuestion = true
-	})
+	SendNUIMessage({ openQuestion = true })
+
+	examActivated = true
 
 	ESX.SetTimeout(200, function()
 		SetNuiFocus(true, true)
 	end)
 
-
 end
 
-function StopTheoryTest(success)
+local function StopTheoryTest(success)
 	CurrentTest = nil
 
-	SendNUIMessage({
-		openQuestion = false
-	})
+	SendNUIMessage({ openQuestion = false })
+
+	examActivated = false
 
 	SetNuiFocus(false)
 
+	if not success then
+		ESX.ShowNotification(TranslateCap('failed_test'))
+		return
+	end
+
+	TriggerServerEvent('esx_dmvschool:addLicense', 'dmv')
+	ESX.ShowNotification(TranslateCap('passed_test'))
+end
+
+local function StopDriveTest(success)
 	if success then
-		TriggerServerEvent('esx_dmvschool:addLicense', 'dmv')
+		TriggerServerEvent('esx_dmvschool:addLicense', CurrentTestType)
 		ESX.ShowNotification(TranslateCap('passed_test'))
 	else
 		ESX.ShowNotification(TranslateCap('failed_test'))
 	end
+
+	CurrentTest     = nil
+	CurrentTestType = nil
 end
 
-function StartDriveTest(type)
+local function SetCurrentZoneType(zoneType)
+	CurrentZoneType = zoneType
+end
+
+local function StartDriveTest(type)
 	ESX.Game.SpawnVehicle(Config.VehicleModels[type], vector3(Config.Zones.VehicleSpawnPoint.Pos.x, Config.Zones.VehicleSpawnPoint.Pos.y, Config.Zones.VehicleSpawnPoint.Pos.z), Config.Zones.VehicleSpawnPoint.Pos.h, function(vehicle)
 		CurrentTest       = 'drive'
 		CurrentTestType   = type
@@ -69,23 +79,9 @@ function StartDriveTest(type)
 	end)
 end
 
-function StopDriveTest(success)
-	if success then
-		TriggerServerEvent('esx_dmvschool:addLicense', CurrentTestType)
-		ESX.ShowNotification(TranslateCap('passed_test'))
-	else
-		ESX.ShowNotification(TranslateCap('failed_test'))
-	end
 
-	CurrentTest     = nil
-	CurrentTestType = nil
-end
 
-function SetCurrentZoneType(type)
-CurrentZoneType = type
-end
-
-function OpenDMVSchoolMenu()
+local function OpenDMVSchoolMenu()
 	local ownedLicenses = {}
 
 	for i=1, #Licenses, 1 do
@@ -161,10 +157,7 @@ function OpenDMVSchoolMenu()
 end
 
 RegisterNUICallback('question', function(data, cb)
-	SendNUIMessage({
-		openSection = 'question'
-	})
-
+	SendNUIMessage({ openSection = 'question' })
 	cb()
 end)
 
@@ -226,7 +219,6 @@ CreateThread(function()
 		end
 
 		if CurrentTest == 'theory' then
-			
 			sleep = 0
 			DisableControlAction(0, 1, true) -- LookLeftRight
 			DisableControlAction(0, 2, true) -- LookUpDown
@@ -279,7 +271,7 @@ CreateThread(function()
 			end
 		end
 
-		if CurrentAction then
+		if CurrentAction and not examActivated then
 			sleep = 0
 			ESX.ShowHelpNotification(CurrentActionMsg)
 
@@ -316,7 +308,7 @@ CreateThread(function()
 end)
 
 -- Speed / Damage control
-CreateThread(function()
+local function mainThread()
 	while true do
 		local sleep = 1500
 
@@ -364,4 +356,4 @@ CreateThread(function()
 		end
 		Wait(sleep)
 	end
-end)
+end CreateThread(mainThread)
