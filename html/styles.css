@@ -223,8 +223,8 @@ p{
 .evaluation{
     margin-top:1em;
     font-size:1.25em;
-    background-color:#fff;
-    color:#161616;
+    background-color:#161616;
+    color:#ffffff;
     padding:.5em 1em;
     border-radius:5px;
     -webkit-box-flex:1;
@@ -245,10 +245,12 @@ p{
 }
 .evaluation--incorrect{
     background-color:#cf0000;
-    color:#fff
+}
+.evaluation--faultpoints {
+    background-color:#ffffff;
+    color: #000000;
 }
 .evaluation--correct{
     background-color:#00ac00;
-    color:#fff
 }
 /*# sourceMappingURL=style.min.css.map */
