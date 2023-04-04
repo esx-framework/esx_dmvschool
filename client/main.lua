@@ -5,13 +5,14 @@ local Licenses          = {}
 local CurrentTest       = nil
 local CurrentTestType   = nil
 local CurrentVehicle    = nil
-local CurrentCheckPoint, DriveErrors = 0, 0
+local CurrentCheckPoint = 0
+local DriveErrors 		= 0
 local LastCheckPoint    = -1
 local CurrentBlip       = nil
 local CurrentZoneType   = nil
 local IsAboveSpeedLimit = false
 local LastVehicleHealth = nil
-local examActivated = false
+local examActivated 	= false
 
 local function StartTheoryTest()
 	CurrentTest = 'theory'
@@ -29,7 +30,7 @@ end
 local function StopTheoryTest(success)
 	CurrentTest = nil
 
-	SendNUIMessage({ openQuestion = false })
+	SendNUIMessage({openQuestion = false})
 
 	examActivated = false
 
@@ -71,9 +72,7 @@ local function StartDriveTest(type)
 		IsAboveSpeedLimit = false
 		CurrentVehicle    = vehicle
 		LastVehicleHealth = GetEntityHealth(vehicle)
-
-		local playerPed   = PlayerPedId()
-		TaskWarpPedIntoVehicle(playerPed, vehicle, -1)
+		TaskWarpPedIntoVehicle(ESX.PlayerData.ped, vehicle, -1)
 		SetVehicleFuelLevel(vehicle, 100.0)
 		DecorSetFloat(vehicle, "_FUEL_LEVEL", GetVehicleFuelLevel(vehicle))
 	end)
@@ -207,7 +206,7 @@ end)
 CreateThread(function()
 	while true do
 		local sleep = 1500
-		local playerPed = PlayerPedId()
+		local playerPed = ESX.PlayerData.ped
 		local coords = GetEntityCoords(playerPed)
 
 		for k,v in pairs(Config.Zones) do
@@ -314,7 +313,7 @@ local function mainThread()
 
 		if CurrentTest == 'drive' then
 			sleep = 0
-			local playerPed = PlayerPedId()
+			local playerPed = ESX.PlayerData.ped
 
 			if IsPedInAnyVehicle(playerPed, false) then
 
