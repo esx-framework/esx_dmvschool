@@ -1,5 +1,3 @@
-
-
 INSERT INTO `licenses` (`type`, `label`) VALUES
 	('dmv', 'Permiso teórico de conducir'),
 	('drive', 'Permiso de conducir de coche'),
