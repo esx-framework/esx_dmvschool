@@ -5,71 +5,47 @@ local Licenses          = {}
 local CurrentTest       = nil
 local CurrentTestType   = nil
 local CurrentVehicle    = nil
-local CurrentCheckPoint, DriveErrors = 0, 0
+local CurrentCheckPoint = 0
+local DriveErrors 		= 0
 local LastCheckPoint    = -1
 local CurrentBlip       = nil
 local CurrentZoneType   = nil
 local IsAboveSpeedLimit = false
 local LastVehicleHealth = nil
+local examActivated 	= false
 
-function DrawMissionText(msg, time)
-	ClearPrints()
-	BeginTextCommandPrint('STRING')
-	AddTextComponentSubstringPlayerName(msg)
-	EndTextCommandPrint(time, true)
-end
-
-function StartTheoryTest()
+local function StartTheoryTest()
 	CurrentTest = 'theory'
 
-	SendNUIMessage({
-		openQuestion = true
-	})
+	SendNUIMessage({ openQuestion = true })
+
+	examActivated = true
 
 	ESX.SetTimeout(200, function()
 		SetNuiFocus(true, true)
 	end)
 
-
 end
 
-function StopTheoryTest(success)
+local function StopTheoryTest(success)
 	CurrentTest = nil
 
-	SendNUIMessage({
-		openQuestion = false
-	})
+	SendNUIMessage({openQuestion = false})
+
+	examActivated = false
 
 	SetNuiFocus(false)
 
-	if success then
-		TriggerServerEvent('esx_dmvschool:addLicense', 'dmv')
-		ESX.ShowNotification(TranslateCap('passed_test'))
-	else
+	if not success then
 		ESX.ShowNotification(TranslateCap('failed_test'))
+		return
 	end
+
+	TriggerServerEvent('esx_dmvschool:addLicense', 'dmv')
+	ESX.ShowNotification(TranslateCap('passed_test'))
 end
 
-function StartDriveTest(type)
-	ESX.Game.SpawnVehicle(Config.VehicleModels[type], vector3(Config.Zones.VehicleSpawnPoint.Pos.x, Config.Zones.VehicleSpawnPoint.Pos.y, Config.Zones.VehicleSpawnPoint.Pos.z), Config.Zones.VehicleSpawnPoint.Pos.h, function(vehicle)
-		CurrentTest       = 'drive'
-		CurrentTestType   = type
-		CurrentCheckPoint = 0
-		LastCheckPoint    = -1
-		CurrentZoneType   = 'residence'
-		DriveErrors       = 0
-		IsAboveSpeedLimit = false
-		CurrentVehicle    = vehicle
-		LastVehicleHealth = GetEntityHealth(vehicle)
-
-		local playerPed   = PlayerPedId()
-		TaskWarpPedIntoVehicle(playerPed, vehicle, -1)
-		SetVehicleFuelLevel(vehicle, 100.0)
-		DecorSetFloat(vehicle, "_FUEL_LEVEL", GetVehicleFuelLevel(vehicle))
-	end)
-end
-
-function StopDriveTest(success)
+local function StopDriveTest(success)
 	if success then
 		TriggerServerEvent('esx_dmvschool:addLicense', CurrentTestType)
 		ESX.ShowNotification(TranslateCap('passed_test'))
@@ -81,11 +57,30 @@ function StopDriveTest(success)
 	CurrentTestType = nil
 end
 
-function SetCurrentZoneType(type)
-CurrentZoneType = type
+local function SetCurrentZoneType(zoneType)
+	CurrentZoneType = zoneType
 end
 
-function OpenDMVSchoolMenu()
+local function StartDriveTest(type)
+	ESX.Game.SpawnVehicle(Config.VehicleModels[type], vector3(Config.Zones.VehicleSpawnPoint.Pos.x, Config.Zones.VehicleSpawnPoint.Pos.y, Config.Zones.VehicleSpawnPoint.Pos.z), Config.Zones.VehicleSpawnPoint.Pos.h, function(vehicle)
+		CurrentTest       = 'drive'
+		CurrentTestType   = type
+		CurrentCheckPoint = 0
+		LastCheckPoint    = -1
+		CurrentZoneType   = 'residence'
+		DriveErrors       = 0
+		IsAboveSpeedLimit = false
+		CurrentVehicle    = vehicle
+		LastVehicleHealth = GetEntityHealth(vehicle)
+		TaskWarpPedIntoVehicle(ESX.PlayerData.ped, vehicle, -1)
+		SetVehicleFuelLevel(vehicle, 100.0)
+		DecorSetFloat(vehicle, "_FUEL_LEVEL", GetVehicleFuelLevel(vehicle))
+	end)
+end
+
+
+
+local function OpenDMVSchoolMenu()
 	local ownedLicenses = {}
 
 	for i=1, #Licenses, 1 do
@@ -161,10 +156,7 @@ function OpenDMVSchoolMenu()
 end
 
 RegisterNUICallback('question', function(data, cb)
-	SendNUIMessage({
-		openSection = 'question'
-	})
-
+	SendNUIMessage({ openSection = 'question' })
 	cb()
 end)
 
@@ -214,7 +206,7 @@ end)
 CreateThread(function()
 	while true do
 		local sleep = 1500
-		local playerPed = PlayerPedId()
+		local playerPed = ESX.PlayerData.ped
 		local coords = GetEntityCoords(playerPed)
 
 		for k,v in pairs(Config.Zones) do
@@ -226,7 +218,6 @@ CreateThread(function()
 		end
 
 		if CurrentTest == 'theory' then
-			
 			sleep = 0
 			DisableControlAction(0, 1, true) -- LookLeftRight
 			DisableControlAction(0, 2, true) -- LookUpDown
@@ -279,7 +270,7 @@ CreateThread(function()
 			end
 		end
 
-		if CurrentAction then
+		if CurrentAction and not examActivated then
 			sleep = 0
 			ESX.ShowHelpNotification(CurrentActionMsg)
 
@@ -316,13 +307,13 @@ CreateThread(function()
 end)
 
 -- Speed / Damage control
-CreateThread(function()
+local function mainThread()
 	while true do
 		local sleep = 1500
 
 		if CurrentTest == 'drive' then
 			sleep = 0
-			local playerPed = PlayerPedId()
+			local playerPed = ESX.PlayerData.ped
 
 			if IsPedInAnyVehicle(playerPed, false) then
 
@@ -364,4 +355,4 @@ CreateThread(function()
 		end
 		Wait(sleep)
 	end
-end)
+end CreateThread(mainThread)
