@@ -47,17 +47,17 @@ function endDrivingSchool() {
   $(".question").hide(0);
 
   if(drivingSchool.faultpoints >= drivingSchool.maxErrorPoints) {
-    $(".evaluation-title").html(unsuccess_title)
-    $(".evaluation-description").html(unsuccess_desciption)
-    $(".evaluation-text").html(unsuccess_text)
-    $(".evaluation-text2").html(unsuccess_text2)
-    $(".evaluation-text3").html(unsuccess_text3)
+    $(".evaluation-title").html(colorCodes.unsuccess_title)
+    $(".evaluation-description").html(colorCodes.unsuccess_desciption)
+    $(".evaluation-text").html(colorCodes.unsuccess_text)
+    $(".evaluation-text2").html(colorCodes.unsuccess_text2)
+    $(".evaluation-text3").html(colorCodes.unsuccess_text3)
   } else {
-    $(".evaluation-title").html(success_title)
-    $(".evaluation-description").html(success_desciption)
-    $(".evaluation-text").html(success_text)
-    $(".evaluation-text2").html(success_text2)
-    $(".evaluation-text3").html(success_text3)
+    $(".evaluation-title").html(colorCodes.success_title)
+    $(".evaluation-description").html(colorCodes.success_desciption)
+    $(".evaluation-text").html(colorCodes.success_text)
+    $(".evaluation-text2").html(colorCodes.success_text2)
+    $(".evaluation-text3").html(colorCodes.success_text3)
     drivingSchool.passed = true;
   }
 
@@ -106,7 +106,7 @@ function checkCurrentQuestion() {
 
 
   } else {
-    $(".error-message").fadeOut(0).fadeIn().html(error_msg)
+    $(".error-message").fadeOut(0).fadeIn().html(colorCodes.error_msg)
   }
 
   return anyChecked
@@ -114,7 +114,7 @@ function checkCurrentQuestion() {
 
 function setQuestion(questionId) {
   $(".section__header h1").html("["+questionId+"] "+drivingSchool.questions[questionId].question+"")
-  $(".section__header .faultpoints").html(""+drivingSchool.questions[questionId].faultpoints+" "+fault_point)
+  $(".section__header .faultpoints").html(""+drivingSchool.questions[questionId].faultpoints+" "+colorCodes.fault_point)
 
   drivingSchool.questions[questionId].answer.forEach(function(antwort, i) {
     $(".section__checkboxes").append('<label class="checkbox">'+antwort[0]+'<input type="checkbox" name="'+i+'"><span class="checkmark"></span></label>')
