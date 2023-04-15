@@ -1,0 +1,111 @@
+<head>
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+	<link rel="stylesheet" href="styles.css" type="text/css">
+</head>
+
+<body>
+	<div class="container drivingSchool" style="display: none;">
+		<header class="header">
+			<div class="header__logo">
+			<img src="logo.png" height="100" width="100"></img>
+			</div>
+			<div class="header__text">
+			<div class="title">
+				Driving School
+			</div>
+			<p>
+				Our driving instructors will accompany you, whether you are a beginner, a rewriter or a
+				Returners, regardless of age, to the finish!
+			</p>
+			</div>
+		</header>
+
+		<div class="step-progress">
+			<div class="step-progress__progress"></div>
+		</div>
+		<div class="content">
+
+
+			<div class="section introduction">
+			<h1>General theory test</h1>
+			<br>
+			<p>
+				Online test for the theoretical driver's license test! Right of way rules, traffic signs, behavior in the event of danger - in our driver's license test you will receive a questionnaire with test questions compiled at random - just like in the official test.
+			</p>
+			<br>
+			<p>
+				For each question you can choose from predefined answers. The evaluation shows whether you would have passed and are still fit for road traffic.
+				The entire theoretical test takes about 5 to 10 minutes, there is no maximum duration. A total of 10 questions must be answered.
+			</p>
+			<br>
+			<p>
+				Depending on the level of difficulty of the questions, there are different numbers of error points. The most difficult category has four demerits. The theoretical driving test is passed if fewer than fifteen error points have been achieved at the end.
+			</p>
+
+			<div class="input-group">
+				<input type="submit" value="Start Theory Test" class="button button--accent start-drivingSchool">
+			</div>
+			</div>
+
+			<div class="section question">
+			<div class="section__header">
+				<h1></h1>
+				<div class="faultpoints"></div>
+			</div>
+
+			<div class="section__checkboxes"></div>
+
+			<div class="input-group">
+				<div class="error-message"></div>
+				<input type="button" value="Next question" class="button button--accent question-submit">
+			</div>
+			</div>
+
+			<div class="section evaluation">
+			<div class="section__header">
+				<h1 class="evaluation-title"></h1>
+			</div>
+			<br>
+			<b class="evaluation-description">.</b>
+
+			<div class="evaluation-group">
+				<div class="evaluation evaluation--incorrect">
+				<b>Answered wrong -</b>
+				<span>0</span>
+				</div>
+
+				<div class="evaluation evaluation--faultpoints">
+				<b>Fault points -</b>
+				<span>0</span>
+				</div>
+
+				<div class="evaluation evaluation--correct">
+				<b>Answered correctly -</b>
+				<span>0</span>
+				</div>
+			</div>
+
+			<p class="evaluation-text"></p>
+			<p class="evaluation-text2"></p>
+			<br>
+			<p class="evaluation-text3"></p>
+
+
+			<div class="input-group">
+				<input type="submit" value="End" class="button button--accent end-button">
+			</div>
+			</div>
+
+
+		</div>
+		</div>
+
+	<script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+	<script src="config.js" type="text/javascript"></script>
+	<script src="locale.js" type="text/javascript"></script>
+	<script src="scripts.js" type="text/javascript"></script>
+</body>
+
+
+
+					
