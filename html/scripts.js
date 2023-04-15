@@ -1,137 +1,134 @@
-// question variables
-var questionNumber = 1;
-var userAnswer = [];
-var goodAnswer = [];
-var questionUsed = [];
-var nbQuestionToAnswer = 10; // don't forget to change the progress bar max value in html
-var nbAnswerNeeded = 5; // out of nbQuestionToAnswer
-var nbPossibleQuestions = 10; // number of questions in database questions.js
-var lastClick = 0;
+let drivingSchool = new DrivingSchool();
 
-function getRandomQuestion() {
-	var random = Math.floor(Math.random() * nbPossibleQuestions);
-
-	while (true) {
-		if (questionUsed.indexOf(random) === -1) {
-			break;
-		}
-
-		random = Math.floor(Math.random() * nbPossibleQuestions);
-	}
-
-	questionUsed.push(random);
-
-	return random;
-}
-
-// Partial Functions
-function closeMain() {
-	$(".home").css("display", "none");
-}
-function openMain() {
-	$(".home").css("display", "block");
-}
-function closeAll() {
-	$(".body").css("display", "none");
-}
-function openQuestionnaire() {
-	$(".questionnaire-container").css("display", "block");
-	var randomQuestion = getRandomQuestion();
-
-	$("#questionNumero").html("Question: " + questionNumber);
-	$("#question").html(tableauQuestion[randomQuestion].question);
-	$(".answerA").html(tableauQuestion[randomQuestion].propositionA);
-	$(".answerB").html(tableauQuestion[randomQuestion].propositionB);
-	$(".answerC").html(tableauQuestion[randomQuestion].propositionC);
-	$(".answerD").html(tableauQuestion[randomQuestion].propositionD);
-	$('input[name=question]').attr('checked', false);
-
-	goodAnswer.push(tableauQuestion[randomQuestion].reponse);
-	$(".questionnaire-container .progression").val(questionNumber - 1);
-}
-function openResultGood() {
-	$(".resultGood").css("display", "block");
-}
-function openResultBad() {
-	$(".resultBad").css("display", "block");
-}
-function openContainer() {
-	$(".question-container").css("display", "block");
-}
-function closeContainer() {
-	$(".question-container").css("display", "none");
-}
-
-// Listen for NUI Events
-window.addEventListener('message', function (event) {
-	var item = event.data;
-
-	// Open & Close main window
-	if (item.openQuestion == true) {
-		openContainer();
-		openMain();
-	}
-
-	if (item.openQuestion == false) {
-		closeContainer();
-		closeMain();
-	}
-
-	// Open sub-windows / partials
-	if (item.openSection == "question") {
-		closeAll();
-		openQuestionnaire();
-	}
+$(".start-drivingSchool").click(function(e) {
+  startDrivingSchool();
 });
 
-// Handle Button Presses
-$(".btnQuestion").click(function () {
-	$.post('http://esx_dmvschool/question', JSON.stringify({}));
+$(".question-submit").click(function(e) {
+  loadNextQuestion();
 });
 
-$(".btnClose").click(function () {
-	$.post('http://esx_dmvschool/close', JSON.stringify({}));
-	userAnswer = [];
-	goodAnswer = [];
-	questionUsed = [];
-	questionNumber = 1;
+
+$(".end-button").click(function(){
+  if(drivingSchool.passed) {
+    $.post('http://esx_dmvschool/close', JSON.stringify({}));
+  } else {
+    $.post('http://esx_dmvschool/kick', JSON.stringify({}));
+  }
 });
 
-$(".btnKick").click(function () {
-	$.post('http://esx_dmvschool/kick', JSON.stringify({}));
-	userAnswer = [];
-	goodAnswer = [];
-	questionUsed = [];
-	questionNumber = 1;
+window.addEventListener('message', function(event){
+  var item = event.data;
+  if(item.openQuestion == true) {
+    drivingSchool = new DrivingSchool();
+    newDrivingSchool();
+    $(".drivingSchool").fadeIn();
+  }
+  if(item.openQuestion == false) {
+    $(".drivingSchool").hide(0);
+  }
 });
 
-// Handle Form Submits
-$("#question-form").submit(function (e) {
-	e.preventDefault();
+function newDrivingSchool() {
+  $(".introduction").show(0);
+  $(".question").hide(0);
+  $(".evaluation").hide(0);
+  resetQuestion();
+}
 
-	if (questionNumber != nbQuestionToAnswer) {
-		//question 1 to 9: pushing answer in array
-		closeAll();
-		userAnswer.push($('input[name="question"]:checked').val());
-		questionNumber++;
-		openQuestionnaire();
-	} else {
-		// question 10: comparing arrays and sending number of good answers
-		userAnswer.push($('input[name="question"]:checked').val());
-		var nbGoodAnswer = 0;
-		for (i = 0; i < nbQuestionToAnswer; i++) {
-			if (userAnswer[i] == goodAnswer[i]) {
-				nbGoodAnswer++;
-			}
-		}
+function startDrivingSchool() {
+  $(".introduction").hide(0);
+  $(".question").fadeIn(1000);
+  setQuestion(drivingSchool.currentQuestion)
+  $(".step-progress__progress").animate({ width: "5%" }, 500 );
+}
 
-		closeAll();
-		if (nbGoodAnswer >= nbAnswerNeeded) {
-			openResultGood();
-		} else {
-			openResultBad();
-		}
-	}
+function endDrivingSchool() {
+  $(".question").hide(0);
 
-	return false;
-});
+  if(drivingSchool.faultpoints >= drivingSchool.maxErrorPoints) {
+    $(".evaluation-title").html(colorCodes.unsuccess_title)
+    $(".evaluation-description").html(colorCodes.unsuccess_desciption)
+    $(".evaluation-text").html(colorCodes.unsuccess_text)
+    $(".evaluation-text2").html(colorCodes.unsuccess_text2)
+    $(".evaluation-text3").html(colorCodes.unsuccess_text3)
+  } else {
+    $(".evaluation-title").html(colorCodes.success_title)
+    $(".evaluation-description").html(colorCodes.success_desciption)
+    $(".evaluation-text").html(colorCodes.success_text)
+    $(".evaluation-text2").html(colorCodes.success_text2)
+    $(".evaluation-text3").html(colorCodes.success_text3)
+    drivingSchool.passed = true;
+  }
+
+  $(".evaluation--incorrect span").html(drivingSchool.wrongAnswer)
+  $(".evaluation--correct span").html(drivingSchool.correctAnswer)
+  $(".evaluation--faultpoints span").html(drivingSchool.faultpoints)
+
+  $(".evaluation").fadeIn(1000);
+}
+
+
+function loadNextQuestion() {
+  const checkQuestion = checkCurrentQuestion();
+  if(checkQuestion) {
+    drivingSchool.currentQuestion++;
+    if(drivingSchool.currentQuestion > Object.keys(drivingSchool.questions).length) {
+      endDrivingSchool();
+    } else {
+      resetQuestion()
+      setQuestion(drivingSchool.currentQuestion)
+    }
+  }
+  updateStepProgress()
+}
+
+function checkCurrentQuestion() {
+  let anyChecked = false;
+  $("input[type=checkbox").each(function(e) {
+    if(this.checked == true) anyChecked = true
+  });
+
+  if(anyChecked) {
+    let fehler = false;
+    $(".error-message").fadeOut(0)
+
+    $("input[type=checkbox").each(function(e) {
+      if(drivingSchool.questions[drivingSchool.currentQuestion].answer[this.name][1] != this.checked) fehler = true;
+    });
+
+    if(fehler) {
+      drivingSchool.faultpoints += drivingSchool.questions[drivingSchool.currentQuestion].faultpoints
+      drivingSchool.wrongAnswer++;
+    } else {
+      drivingSchool.correctAnswer++;
+    }
+
+
+  } else {
+    $(".error-message").fadeOut(0).fadeIn().html(colorCodes.error_msg)
+  }
+
+  return anyChecked
+}
+
+function setQuestion(questionId) {
+  $(".section__header h1").html("["+questionId+"] "+drivingSchool.questions[questionId].question+"")
+  $(".section__header .faultpoints").html(""+drivingSchool.questions[questionId].faultpoints+" "+colorCodes.fault_point)
+
+  drivingSchool.questions[questionId].answer.forEach(function(antwort, i) {
+    $(".section__checkboxes").append('<label class="checkbox">'+antwort[0]+'<input type="checkbox" name="'+i+'"><span class="checkmark"></span></label>')
+  });
+}
+
+function resetQuestion() {
+  $(".section__header h1").html("")
+  $(".section__header .faultpoints").html("")
+  $(".section__checkboxes").html("")
+}
+
+function updateStepProgress() {
+  let progress = (100 / Object.keys(drivingSchool.questions).length);
+  let currentProgress = (drivingSchool.currentQuestion-1) * progress;
+  $(".step-progress__progress").animate({ width: ""+currentProgress+"%" }, 1000 );
+}

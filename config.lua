@@ -29,7 +29,7 @@ Config.Zones = {
 		Pos   = {x = 239.471, y = -1380.960, z = 32.741},
 		Size  = {x = 1.5, y = 1.5, z = 1.0},
 		Color = {r = 204, g = 204, b = 0},
-		Type  = 1
+		Type  = 25
 	},
 
 	VehicleSpawnPoint = {

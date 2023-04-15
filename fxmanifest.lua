@@ -29,9 +29,10 @@ ui_page 'html/ui.html'
 
 files {
 	'html/ui.html',
-	'html/dmv.png',
+	'html/logo.png',
 	'html/styles.css',
-	'html/questions.js',
+	'html/locale.js',
+	'html/config.js',
 	'html/scripts.js',
 	'html/debounce.min.js'
 }
