@@ -1,6 +1,6 @@
 var tableauQuestion = [
 	{
-		question: "Als je 80 km/h gaat, en je nadert een woonwijk dan moet je:",
+		question: "Je rijd 80 km/u maar je nadert een woonwijk, wat doe je ?:",
 		propositionA: "Je geeft gas bij",
 		propositionB: "Je behoudt je snelheid, zo lang je niemand inhaalt",
 		propositionC: "Je behoudt je snelheid",
@@ -9,7 +9,7 @@ var tableauQuestion = [
 	},
 
 	{
-		question: "Als je rechts gaat bij een stoplicht, maar dan ziet iemand oversteken wat doe je dan:",
+		question: "Je gaat rechts bij een stoplicht maar je ziet iemand oversteken, wat doe je ?:",
 		propositionA: "Je wacht totdat de voetganger is overgestoken",
 		propositionB: "Je passeert de voetganger",
 		propositionC: "Je kijkt of er geen voertuigen om je heen zijn",
@@ -28,15 +28,15 @@ var tableauQuestion = [
 
 	{
 		question: "Voordat je van rijstrook veranderd moet je:",
-		propositionA: "Kijk in je spiegels",
-		propositionB: "Kijk in je blinde hoek",
+		propositionA: "Kijken in je spiegels",
+		propositionB: "Kijken in je blinde hoek",
 		propositionC: "Gebruik je knipperlicht naar de correcte rijbaan",
 		propositionD: "Alles hierboven",
 		reponse: "D"
 	},
 
 	{
-		question: "Wat bloed alcohol level word gezien als rijden onder invloed?",
+		question: "Welk alcoholgehalte word gezien als rijden onder invloed?",
 		propositionA: "0.05%",
 		propositionB: "0.18%",
 		propositionC: "0.08%",
@@ -54,7 +54,7 @@ var tableauQuestion = [
 	},
 
 	{
-		question: "Een voetganger heeft een rood licht om over te steken",
+		question: "Een voetganger heeft een rood licht om over te steken, wat doe je ?",
 		propositionA: "Je laat diegene passeren",
 		propositionB: "Je observeert wat diegene doet en gaat vervolgens door omdat het groen is.",
 		propositionC: "Je signaleert diegene om over te steken",
@@ -65,7 +65,7 @@ var tableauQuestion = [
 	{
 		question: "Wat is toegestaan als je een voertuig inhaalt",
 		propositionA: "Je gaat bumper kleven om sneller voorbij te gaan",
-		propositionB: "Je paseert zonder de weg te verlaten",
+		propositionB: "Je passeert zonder de weg te verlaten",
 		propositionC: "Je rijdt aan de andere kant van de weg om in te halen",
 		propositionD: "Je gaat te snel rijden.",
 		reponse: "C"
@@ -81,11 +81,11 @@ var tableauQuestion = [
 	},
 
 	{
-		question: "Wanneer je word ingehaald door een ander voertuig is het belangrijk NIET te:",
+		question: "Wat moet je NIET doen als je word ingehaald door een ander voertuig:",
 		propositionA: "Verslomen",
 		propositionB: "Je spiegels bekijken",
 		propositionC: "Andere bestuurders bekijken",
-		propositionD: "Snelheid te verhogen",
+		propositionD: "Snelheid verhogen",
 		reponse: "D"
 	},
 ]
