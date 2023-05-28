@@ -1,6 +1,6 @@
 INSERT INTO `licenses` (`type`, `label`) VALUES
-	('dmv', 'Permis de conduire'),
-	('drive', 'Licence de conduite'),
-	('drive_bike', 'Permis de motocyclette'),
-	('drive_truck', 'Licence de conduite commerciale')
+	('dmv', 'Code de la route'),
+	('drive', 'Permis de conduire'),
+	('drive_bike', 'Permis moto'),
+	('drive_truck', 'Permis camion')
 ;
