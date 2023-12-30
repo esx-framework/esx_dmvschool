@@ -201,6 +201,7 @@ CreateThread(function()
 	local blip = AddBlipForCoord(Config.Zones.DMVSchool.Pos.x, Config.Zones.DMVSchool.Pos.y, Config.Zones.DMVSchool.Pos.z)
 
 	SetBlipSprite (blip, 408)
+	SetBlipColour (blip, 0)
 	SetBlipDisplay(blip, 4)
 	SetBlipScale  (blip, 1.2)
 	SetBlipAsShortRange(blip, true)
@@ -335,7 +336,7 @@ CreateThread(function()
 						tooMuchSpeed = true
 
 						if not IsAboveSpeedLimit then
-							DriveErrors       = DriveErrors + 1
+							DriveErrors       += 1
 							IsAboveSpeedLimit = true
 
 							ESX.ShowNotification(TranslateCap('driving_too_fast', v))
@@ -351,14 +352,14 @@ CreateThread(function()
 				local health = GetEntityHealth(vehicle)
 				if health < LastVehicleHealth then
 
-					DriveErrors = DriveErrors + 1
+					DriveErrors += 1
 
 					ESX.ShowNotification(TranslateCap('you_damaged_veh'))
 					ESX.ShowNotification(TranslateCap('errors', DriveErrors, Config.MaxErrors))
 
 					-- avoid stacking faults
 					LastVehicleHealth = health
-					Wait(1500)
+					sleep = 1500
 				end
 			end
 		end
