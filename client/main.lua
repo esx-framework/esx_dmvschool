@@ -9,7 +9,6 @@ local CurrentCheckPoint, DriveErrors = 0, 0
 local LastCheckPoint    = -1
 local CurrentBlip       = nil
 local CurrentZoneType   = nil
-local IsAboveSpeedLimit = false
 local LastVehicleHealth = nil
 
 function DrawMissionText(msg, time)
@@ -320,46 +319,43 @@ end)
 CreateThread(function()
 	while true do
 		local sleep = 1500
-
 		if CurrentTest == 'drive' then
 			sleep = 0
 			local playerPed = PlayerPedId()
-
 			if IsPedInAnyVehicle(playerPed, false) then
-
 				local vehicle      = GetVehiclePedIsIn(playerPed, false)
 				local speed        = GetEntitySpeed(vehicle) * Config.SpeedMultiplier
-				local tooMuchSpeed = false
-
 				for k,v in pairs(Config.SpeedLimits) do
 					if CurrentZoneType == k and speed > v then
-						tooMuchSpeed = true
-
-						if not IsAboveSpeedLimit then
-							DriveErrors       += 1
-							IsAboveSpeedLimit = true
-
-							ESX.ShowNotification(TranslateCap('driving_too_fast', v))
-							ESX.ShowNotification(TranslateCap('errors', DriveErrors, Config.MaxErrors))
-						end
+						DriveErrors += 1
+						ESX.ShowNotification(TranslateCap('driving_too_fast', v))
+						ESX.ShowNotification(TranslateCap('errors', DriveErrors, Config.MaxErrors))
+						sleep = Config.SpeedingErrorDelay;
 					end
 				end
+			end
+		end
+		Wait(sleep)
+	end
+end)
 
-				if not tooMuchSpeed then
-					IsAboveSpeedLimit = false
-				end
-
+CreateThread(function()
+	while true do
+		local sleep = 1500
+		if CurrentTest == 'drive' then
+			sleep = 0
+			local playerPed = PlayerPedId()
+			if IsPedInAnyVehicle(playerPed, false) then
+				local vehicle = GetVehiclePedIsIn(playerPed, false)
 				local health = GetEntityHealth(vehicle)
 				if health < LastVehicleHealth then
-
 					DriveErrors += 1
-
 					ESX.ShowNotification(TranslateCap('you_damaged_veh'))
 					ESX.ShowNotification(TranslateCap('errors', DriveErrors, Config.MaxErrors))
 
 					-- avoid stacking faults
 					LastVehicleHealth = health
-					sleep = 1500
+					sleep = 1500;
 				end
 			end
 		end
