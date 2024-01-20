@@ -1,7 +1,7 @@
 name: Formatter handle web and lua files
 
 on:
-  pull_request:
+  pull_request_target:
     types: [ labeled ]
   
 jobs:
@@ -64,6 +64,7 @@ jobs:
   formatter-lua:
     needs: get-changed-files
     uses: esx-framework/.github/.github/workflows/formatter-lua.yml@main
+    secrets: inherit
     if: ${{ github.event_name == 'pull_request' && github.event.label.name == 'run-format' }}
     with:
       all-changed-files-list: ${{ needs.get-changed-files.outputs.all-changed-files-lua-list }}
