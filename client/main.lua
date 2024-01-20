@@ -14,8 +14,8 @@ local LastVehicleHealth = nil
 
 function DrawMissionText(msg, time)
 	ClearPrints()
-	BeginTextCommandPrint('STRING')
-	AddTextComponentSubstringPlayerName(msg)
+				BeginTextCommandPrint('STRING')
+			AddTextComponentSubstringPlayerName(msg)
 	EndTextCommandPrint(time, true)
 end
 
@@ -34,7 +34,7 @@ function StartTheoryTest()
 end
 
 function StopTheoryTest(success)
-	CurrentTest = nil
+			CurrentTest = nil
 
 	SendNUIMessage({
 		openQuestion = false
@@ -54,8 +54,8 @@ function StartDriveTest(type)
 	ESX.Game.SpawnVehicle(Config.VehicleModels[type], vector3(Config.Zones.VehicleSpawnPoint.Pos.x, Config.Zones.VehicleSpawnPoint.Pos.y, Config.Zones.VehicleSpawnPoint.Pos.z), Config.Zones.VehicleSpawnPoint.Pos.h, function(vehicle)
 		CurrentTest       = 'drive'
 		CurrentTestType   = type
-		CurrentCheckPoint = 0
-		LastCheckPoint    = -1
+				CurrentCheckPoint = 0
+			LastCheckPoint    = -1
 		CurrentZoneType   = 'residence'
 		DriveErrors       = 0
 		IsAboveSpeedLimit = false
