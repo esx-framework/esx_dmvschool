@@ -53,13 +53,14 @@ jobs:
        all-changed-files-web-list: ${{ steps.changed-files-web.outputs.all_changed_files }}
        any-changed-files-web-list: ${{ steps.changed-files-web.outputs.any_changed }}
        
-  #formatter-web:
-   #   needs: get-changed-files
-   #   uses: esx-framework/.github/.github/workflows/formatter-web.yml@main
-   #   if: ${{ github.event_name == 'pull_request' && github.event.label.name == 'run-format' }}
-   #   with:
-   #       all-changed-files-list: ${{ needs.get-changed-files.outputs.all-changed-files-web-list }}
-   #      any-changed-files-list: ${{ needs.get-changed-files.outputs.any-changed-files-web-list }}
+  formatter-web:
+      needs: get-changed-files
+      uses: esx-framework/.github/.github/workflows/formatter-web.yml@main
+      secrets: inherit
+      if: ${{ github.event_name == 'pull_request' && github.event.label.name == 'run-format' }}
+      with:
+          all-changed-files-list: ${{ needs.get-changed-files.outputs.all-changed-files-web-list }}
+          any-changed-files-list: ${{ needs.get-changed-files.outputs.any-changed-files-web-list }}
     
   formatter-lua:
     needs: get-changed-files
