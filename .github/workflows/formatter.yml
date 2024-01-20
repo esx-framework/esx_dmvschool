@@ -53,7 +53,7 @@ jobs:
        
   formatter-web:
       needs: get-changed-files
-      uses: CommunityRP-FiveM-Server/.github/.github/workflows/formatter-web.yml@main
+      uses: esx-framework/.github/.github/workflows/formatter-web.yml@main
       if: ${{ github.event_name == 'pull_request' && github.event.label.name == 'format' }}
       with:
           all-changed-files-list: ${{ needs.get-changed-files.outputs.all-changed-files-web-list }}
@@ -61,7 +61,7 @@ jobs:
     
   formatter-lua:
     needs: get-changed-files
-    uses: CommunityRP-FiveM-Server/.github/.github/workflows/formatter-lua.yml@main
+    uses: esx-framework/.github/.github/workflows/formatter-lua.yml@main
     if: ${{ github.event_name == 'pull_request' && github.event.label.name == 'format' }}
     with:
       all-changed-files-list: ${{ needs.get-changed-files.outputs.all-changed-files-lua-list }}
