@@ -1,10 +1,10 @@
 var tableauQuestion = [
 	{
-		question: "If you're going 80 km/h, and you're approaching a residential area you must:",
+				question: "If you're going 80 km/h, and you're approaching a residential area you must:",
 		propositionA: "You accelerate",
-		propositionB: "You keep your speed, if you do not pass other vehicles",
+				propositionB: "You keep your speed, if you do not pass other vehicles",
 		propositionC: "You slow down",
-		propositionD: "You keep your speed",
+				propositionD: "You keep your speed",
 		reponse: "C"
 	},
 
