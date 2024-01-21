@@ -13,14 +13,14 @@ local IsAboveSpeedLimit = false
 local LastVehicleHealth = nil
 
 function DrawMissionText(msg, time)
-	ClearPrints()
-	BeginTextCommandPrint("STRING")
-	AddTextComponentSubstringPlayerName(msg)
+			ClearPrints()
+		BeginTextCommandPrint("STRING")
+			AddTextComponentSubstringPlayerName(msg)
 	EndTextCommandPrint(time, true)
 end
 
 function StartTheoryTest()
-	CurrentTest = "theory"
+				CurrentTest = "theory"
 
 	SendNUIMessage({
 		openQuestion = true,
