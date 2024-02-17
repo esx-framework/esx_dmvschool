@@ -1,0 +1,72 @@
+name: Formatter handle web and lua files
+
+on:
+  pull_request_target:
+    types: [ labeled ]
+  
+jobs:
+  get-changed-files:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          token: ${{ secrets.MY_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+          
+      - name: Get changed files
+        id: changed-files-lua
+        uses: tj-actions/changed-files@v37
+        with:
+          files: |
+            **/*.lua
+            !**/*.yml
+      - name: List all changed files
+        run: |
+          for file in ${{ steps.changed-files-lua.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
+
+      - name: Get changed web files
+        id: changed-files-web
+        uses: tj-actions/changed-files@v37
+        with:
+          files: |
+            **/*.{js,html,css,jsx}
+            !**/*.yml
+            !**/*.min.js
+            
+      - name: List all changed web files
+        run: |
+          for file in ${{ steps.changed-files-web.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
+          
+    outputs:
+       all-changed-files-lua-list: ${{ steps.changed-files-lua.outputs.all_changed_files }}
+       any-changed-files-lua-list: ${{ steps.changed-files-lua.outputs.any_changed }}
+       all-changed-files-web-list: ${{ steps.changed-files-web.outputs.all_changed_files }}
+       any-changed-files-web-list: ${{ steps.changed-files-web.outputs.any_changed }}
+       
+  formatter-web:
+      needs: get-changed-files
+      uses: esx-framework/.github/.github/workflows/formatter-web.yml@main
+      secrets: inherit
+      if: ${{ github.event_name == 'pull_request_target' && github.event.label.name == 'run-format' }}
+      with:
+          all-changed-files-list: ${{ needs.get-changed-files.outputs.all-changed-files-web-list }}
+          any-changed-files-list: ${{ needs.get-changed-files.outputs.any-changed-files-web-list }}
+    
+  formatter-lua:
+    needs: get-changed-files
+    uses: esx-framework/.github/.github/workflows/formatter-lua.yml@main
+    secrets: inherit
+    if: ${{ github.event_name == 'pull_request_target' && github.event.label.name == 'run-format' }}
+    with:
+      all-changed-files-list: ${{ needs.get-changed-files.outputs.all-changed-files-lua-list }}
+      any-changed-files-list: ${{ needs.get-changed-files.outputs.any-changed-files-lua-list }}
