@@ -330,7 +330,7 @@ CreateThread(function()
 						DriveErrors += 1
 						ESX.ShowNotification(TranslateCap('driving_too_fast', v))
 						ESX.ShowNotification(TranslateCap('errors', DriveErrors, Config.MaxErrors))
-						sleep = Config.SpeedingErrorDelay;
+						sleep = (Config.SpeedingErrorDelay < 5000) and 5000 or Config.SpeedingErrorDelay
 					end
 				end
 			end
@@ -355,7 +355,7 @@ CreateThread(function()
 
 					-- avoid stacking faults
 					LastVehicleHealth = health
-					sleep = 1500;
+					sleep = 1500
 				end
 			end
 		end
