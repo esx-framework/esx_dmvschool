@@ -23,6 +23,7 @@ Locales['sv'] = {
     ['driving_school_blip'] = 'Körskola',
     ['driving_test_complete'] = 'Körprov avklarat',
     ['driving_too_fast'] = '~r~Du kör för fort, tillåtna hastighet är: %s km/h!',
+    ['test_failed_go_to_start_point'] = '~r~Go to the starting point, because you failed the test!',
     ['errors'] = 'Misstag: ~r~%s/%s',
     ['you_damaged_veh'] = 'Du skadade fordonet',
     ['not_enough_money'] = 'Du har inte tillräckligt med pengar',

@@ -23,6 +23,7 @@ Locales['zh-cn'] = {
   ['driving_school_blip'] = '驾校',
   ['driving_test_complete'] = '驾驶考试完成',
   ['driving_too_fast'] = '驾驶载具速度过快, 注意限速: %s km/h!',
+  ['test_failed_go_to_start_point'] = '~r~Go to the starting point, because you failed the test!',
   ['errors'] = '失误: ~r~%s~s~/~g~%s~s~',
   ['you_damaged_veh'] = '载具出现受损！',
   ['not_enough_money'] = '您暂无足够现金',

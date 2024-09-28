@@ -23,6 +23,7 @@ Locales['nl'] = {
   ['driving_school_blip'] = 'CBR',
   ['driving_test_complete'] = 'Praktijk examen gedaan',
   ['driving_too_fast'] = '~r~Je rijd te snel! De snelheids limiet is: %s km/h!',
+  ['test_failed_go_to_start_point'] = '~r~Go to the starting point, because you failed the test!',
   ['errors'] = 'Fouten: ~r~%s/%s',
   ['you_damaged_veh'] = 'Je hebt het voertuig beschadigd',
   ['not_enough_money'] = 'Je hebt niet genoeg geld',

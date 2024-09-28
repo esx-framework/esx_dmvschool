@@ -23,6 +23,7 @@ Locales['sr'] = {
   ['driving_school_blip'] = 'AutoŠkola',
   ['driving_test_complete'] = 'Polaganje vožnje završeno',
   ['driving_too_fast'] = '~r~Vozite prebrzo, trenutno ograničenje brzine: %s km/h!',
+  ['test_failed_go_to_start_point'] = '~r~Go to the starting point, because you failed the test!',
   ['errors'] = 'Greške: ~r~%s/%s',
   ['you_damaged_veh'] = 'Oštetili ste vozilo',
   ['not_enough_money'] = 'Nemate dovoljno novca',

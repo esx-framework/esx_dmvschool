@@ -9,8 +9,8 @@ local CurrentCheckPoint, DriveErrors = 0, 0
 local LastCheckPoint    = -1
 local CurrentBlip       = nil
 local CurrentZoneType   = nil
-local IsAboveSpeedLimit = false
 local LastVehicleHealth = nil
+local failedTest = false
 
 function DrawMissionText(msg, time)
 	ClearPrints()
@@ -61,6 +61,7 @@ function StartDriveTest(type)
 		IsAboveSpeedLimit = false
 		CurrentVehicle    = vehicle
 		LastVehicleHealth = GetEntityHealth(vehicle)
+		failedTest = false
 
 		local playerPed   = PlayerPedId()
 		TaskWarpPedIntoVehicle(playerPed, vehicle, -1)
@@ -73,6 +74,7 @@ function StopDriveTest(success)
 	if success then
 		TriggerServerEvent('esx_dmvschool:addLicense', CurrentTestType)
 		ESX.ShowNotification(TranslateCap('passed_test'))
+		ESX.ShowNotification(TranslateCap('driving_test_complete'))
 	else
 		ESX.ShowNotification(TranslateCap('failed_test'))
 	end
@@ -246,14 +248,7 @@ CreateThread(function()
 				end
 
 				CurrentTest = nil
-
-				ESX.ShowNotification(TranslateCap('driving_test_complete'))
-
-				if DriveErrors < Config.MaxErrors then
-					StopDriveTest(true)
-				else
-					StopDriveTest(false)
-				end
+				StopDriveTest(DriveErrors < Config.MaxErrors)
 			else
 				if CurrentCheckPoint ~= LastCheckPoint then
 					if DoesBlipExist(CurrentBlip) then
@@ -316,53 +311,62 @@ CreateThread(function()
 	end
 end)
 
+
+function TestFailedGoToLastCheckPoint()
+	CurrentCheckPoint = #Config.CheckPoints - 1
+	failedTest = true
+end
+
 -- Speed / Damage control
 CreateThread(function()
 	while true do
 		local sleep = 1500
-
 		if CurrentTest == 'drive' then
 			sleep = 0
 			local playerPed = PlayerPedId()
-
+			
 			if IsPedInAnyVehicle(playerPed, false) then
+				local vehicle = GetVehiclePedIsIn(playerPed, false)
+				local speed = GetEntitySpeed(vehicle) * Config.SpeedMultiplier
+				local health = GetEntityHealth(vehicle)
 
-				local vehicle      = GetVehiclePedIsIn(playerPed, false)
-				local speed        = GetEntitySpeed(vehicle) * Config.SpeedMultiplier
-				local tooMuchSpeed = false
+				-- Speed check
+				for k, v in pairs(Config.SpeedLimits) do
 
-				for k,v in pairs(Config.SpeedLimits) do
 					if CurrentZoneType == k and speed > v then
-						tooMuchSpeed = true
+						DriveErrors += 1
 
-						if not IsAboveSpeedLimit then
-							DriveErrors       += 1
-							IsAboveSpeedLimit = true
-
+						if DriveErrors <= Config.MaxErrors then
 							ESX.ShowNotification(TranslateCap('driving_too_fast', v))
 							ESX.ShowNotification(TranslateCap('errors', DriveErrors, Config.MaxErrors))
 						end
+
+						sleep = (Config.SpeedingErrorDelay < 5000) and 5000 or Config.SpeedingErrorDelay
 					end
 				end
 
-				if not tooMuchSpeed then
-					IsAboveSpeedLimit = false
-				end
-
-				local health = GetEntityHealth(vehicle)
+				-- Vehicle damage check
 				if health < LastVehicleHealth then
-
 					DriveErrors += 1
-
-					ESX.ShowNotification(TranslateCap('you_damaged_veh'))
-					ESX.ShowNotification(TranslateCap('errors', DriveErrors, Config.MaxErrors))
-
-					-- avoid stacking faults
+					if DriveErrors <= Config.MaxErrors then
+						ESX.ShowNotification(TranslateCap('you_damaged_veh'))
+						ESX.ShowNotification(TranslateCap('errors', DriveErrors, Config.MaxErrors))
+					end
+					
 					LastVehicleHealth = health
 					sleep = 1500
+				end
+
+				if DriveErrors > Config.MaxErrors then
+					ESX.ShowNotification(TranslateCap('test_failed_go_to_start_point'))
+					if not failedTest then
+						TestFailedGoToLastCheckPoint()
+					end
+					sleep = 5000
 				end
 			end
 		end
 		Wait(sleep)
 	end
 end)
+
