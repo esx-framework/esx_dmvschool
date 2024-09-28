@@ -23,6 +23,7 @@ Locales['de'] = {
   ['driving_school_blip'] = 'Fahrschule',
   ['driving_test_complete'] = 'Führerschein Test beendet!',
   ['driving_too_fast'] = '~r~Du bist zu Schnell Das derzeitige Geschwindigkeitslimit beträgt: %s km/h!',
+  ['test_failed_go_to_start_point'] = '~r~Go to the starting point, because you failed the test!',
   ['errors'] = 'Fehler: ~r~%s/%s',
   ['you_damaged_veh'] = 'Du hast das Fahrzeug beschädigt!',
   ['not_enough_money'] = 'Du hast nicht genug Geld!',

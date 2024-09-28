@@ -23,6 +23,7 @@ Locales['tr'] = {
     ['driving_school_blip'] = 'Sürücü Okulu',
     ['driving_test_complete'] = 'Sürüş testi tamamlandı',
     ['driving_too_fast'] = '~r~Çok hızlı sürüyorsunuz, mevcut hız sınırı: %s km/sa!',
+    ['test_failed_go_to_start_point'] = '~r~Go to the starting point, because you failed the test!',
     ['errors'] = 'Hatalar: ~r~%s/%s',
     ['you_damaged_veh'] = 'Araç hasar gördü',
     ['not_enough_money'] = 'Yeterli paranız yok',

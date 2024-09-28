@@ -23,6 +23,7 @@ Locales['fi'] = {
   ['driving_school_blip'] = 'Autokoulu',
   ['driving_test_complete'] = 'ajokoe suoritettu',
   ['driving_too_fast'] = '~r~Ajat liian nopeaa! Hidasta! Nopeusrajoitus: %s km/h!',
+  ['test_failed_go_to_start_point'] = '~r~Go to the starting point, because you failed the test!',
   ['errors'] = 'mistakes: ~r~%s/%s',
   ['you_damaged_veh'] = 'Vahingoitit ajoneuvoa. Aja varovaisemmin...',
   ['not_enough_money'] = 'Sinulla ei ole tarpeeksi rahaa'

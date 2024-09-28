@@ -23,6 +23,7 @@ Locales['hu'] = {
   ['driving_school_blip'] = 'Autósiskola',
   ['driving_test_complete'] = 'A vizsga sikeres volt',
   ['driving_too_fast'] = '~r~Túl gyorsan hajtasz,a végén még megállít a rendőr. A sebesség határ: %s km/h!',
+  ['test_failed_go_to_start_point'] = '~r~Menj a kezdőpontra mert a elbuktad a vizsgát!',
   ['errors'] = 'Hibapontok: ~r~%s/%s',
   ['you_damaged_veh'] = 'Összetörted az autót, ez drága lesz.',
   ['not_enough_money'] = 'Nincs elég pénzed!',
